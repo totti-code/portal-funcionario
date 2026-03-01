@@ -320,7 +320,7 @@ textarea{ min-height: 90px; resize: vertical; }
 
 .adminOnly{ display:none; }
 
-/* ====== SETORES (ESTILO ORGANOGRAMA) ====== */
+/* ====== SETORES (ORGANOGRAMA) ====== */
 .orgTop{
   display:flex;
   align-items:flex-start;
