@@ -70,6 +70,7 @@ function openTab(key){
   if(key === "comunicados") renderComunicados();
   if(key === "documentos") renderDocs();
   if(key === "chamados") renderTickets();
+if(key === "treinamentos") renderTreinamentos();
 }
 tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
 
