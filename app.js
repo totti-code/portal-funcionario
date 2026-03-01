@@ -59,6 +59,7 @@ const panels = {
   comunicados: $("tab-comunicados"),
   documentos: $("tab-documentos"),
   chamados: $("tab-chamados"),
+  treinamentos: $("tab-treinamentos"),
   rh: $("tab-rh")
 };
 
