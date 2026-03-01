@@ -2,7 +2,7 @@
    Martree Portal (Front-end)
    - Login local (demo)
    - Controle de role (admin/user)
-   - CRUD Admin: escalas, aniversariantes, treinamentos, comunicados, RH, usuários, chamados
+   - CRUD Admin: escalas, aniversariantes, treinamentos, comunicados, setores(funcionários), usuários, chamados
    ========================= */
 
 const $ = (id) => document.getElementById(id);
@@ -67,18 +67,54 @@ function seed(){
       { id: uid("TR"), titulo:"Boas práticas de atendimento", desc:"Como registrar chamados com clareza e prioridade.", link:"", updatedAt: nowISO() },
       { id: uid("TR"), titulo:"Segurança da informação básica", desc:"Dicas rápidas para evitar golpes e vazamentos.", link:"", updatedAt: nowISO() },
     ],
+
+    // 👇 Agora essa lista é a base do "Setores / Organograma"
     funcionarios: [
-      { id: uid("F"), nome:"Jociely Souza", setor:"RH", cargo:"Analista de RH", email:"rh@martree.com", telefone:"(85) 99999-0001", ramal:"201" },
-      { id: uid("F"), nome:"Alani Costa", setor:"RH", cargo:"Assistente de RH", email:"alani@martree.com", telefone:"(85) 99999-0002", ramal:"202" },
-      { id: uid("F"), nome:"Beatriz Lima", setor:"RH", cargo:"Auxiliar de RH", email:"beatriz@martree.com", telefone:"(85) 99999-0003", ramal:"203" },
+      // Donos
+      { id: uid("F"), nome:"Sr. Itamar", setor:"Donos", cargo:"Sócio Proprietário", email:"itamar@martree.com", telefone:"(85) 99999-1001", ramal:"101",
+        sobre:"Define estratégias e decisões principais da empresa." },
+      { id: uid("F"), nome:"Dona Virgínia", setor:"Donos", cargo:"Sócia Proprietária", email:"virginia@martree.com", telefone:"(85) 99999-1002", ramal:"102",
+        sobre:"Apoia decisões, cultura e organização geral da empresa." },
 
-      { id: uid("F"), nome:"Felipe Santos", setor:"TI", cargo:"Suporte", email:"felipe@martree.com", telefone:"(85) 99999-0101", ramal:"301" },
-      { id: uid("F"), nome:"Ismael Rocha", setor:"TI", cargo:"Infra", email:"ismael@martree.com", telefone:"(85) 99999-0102", ramal:"302" },
+      // Diretoria
+      { id: uid("F"), nome:"Rogério", setor:"Diretoria", cargo:"Diretor Geral", email:"rogerio@martree.com", telefone:"(85) 99999-1101", ramal:"111",
+        sobre:"Coordena setores e garante metas e alinhamento geral." },
 
-      { id: uid("F"), nome:"Maria Oliveira", setor:"CPD", cargo:"Operadora", email:"maria@martree.com", telefone:"(85) 99999-0201", ramal:"401" },
-      { id: uid("F"), nome:"Anderson Lima", setor:"CPD", cargo:"Operador", email:"anderson@martree.com", telefone:"(85) 99999-0202", ramal:"402" },
-      { id: uid("F"), nome:"Gladstone Souza", setor:"CPD", cargo:"Operador", email:"gladstone@martree.com", telefone:"(85) 99999-0203", ramal:"403" },
+      // Financeiro
+      { id: uid("F"), nome:"Jakeline", setor:"Financeiro", cargo:"Financeiro", email:"jakeline@martree.com", telefone:"(85) 99999-1201", ramal:"121",
+        sobre:"Fluxo de caixa, pagamentos e relatórios financeiros." },
+      { id: uid("F"), nome:"Rayssa", setor:"Financeiro", cargo:"Financeiro", email:"rayssa@martree.com", telefone:"(85) 99999-1202", ramal:"122",
+        sobre:"Conciliações, lançamentos e suporte ao contas a pagar." },
+      { id: uid("F"), nome:"Luana", setor:"Financeiro", cargo:"Financeiro", email:"luana@martree.com", telefone:"(85) 99999-1203", ramal:"123",
+        sobre:"Cobrança, controle de despesas e apoio na prestação de contas." },
+
+      // RH
+      { id: uid("F"), nome:"Jociely Souza", setor:"RH", cargo:"Analista de RH", email:"rh@martree.com", telefone:"(85) 99999-0001", ramal:"201",
+        sobre:"Processos de RH, admissões e rotinas internas." },
+      { id: uid("F"), nome:"Alani Costa", setor:"RH", cargo:"Assistente de RH", email:"alani@martree.com", telefone:"(85) 99999-0002", ramal:"202",
+        sobre:"Apoio em documentações e atendimento ao colaborador." },
+      { id: uid("F"), nome:"Beatriz Lima", setor:"RH", cargo:"Auxiliar de RH", email:"beatriz@martree.com", telefone:"(85) 99999-0003", ramal:"203",
+        sobre:"Arquivos, formulários e suporte ao setor." },
+
+      // TI
+      { id: uid("F"), nome:"Felipe Santos", setor:"TI", cargo:"Suporte", email:"felipe@martree.com", telefone:"(85) 99999-0101", ramal:"301",
+        sobre:"Chamados, manutenção e suporte aos usuários." },
+      { id: uid("F"), nome:"Ismael Rocha", setor:"TI", cargo:"Infra", email:"ismael@martree.com", telefone:"(85) 99999-0102", ramal:"302",
+        sobre:"Rede, servidores, backups e infraestrutura." },
+
+      // CPD
+      { id: uid("F"), nome:"Maria Oliveira", setor:"CPD", cargo:"Operadora", email:"maria@martree.com", telefone:"(85) 99999-0201", ramal:"401",
+        sobre:"Rotinas do CPD e suporte operacional." },
+      { id: uid("F"), nome:"Anderson Lima", setor:"CPD", cargo:"Operador", email:"anderson@martree.com", telefone:"(85) 99999-0202", ramal:"402",
+        sobre:"Acompanhamento de processos e apoio ao CPD." },
+      { id: uid("F"), nome:"Gladstone Souza", setor:"CPD", cargo:"Operador", email:"gladstone@martree.com", telefone:"(85) 99999-0203", ramal:"403",
+        sobre:"Monitoramento e apoio aos sistemas internos." },
+
+      // Marketing (exemplo)
+      { id: uid("F"), nome:"Larissa", setor:"Marketing", cargo:"Marketing", email:"larissa@martree.com", telefone:"(85) 99999-1301", ramal:"131",
+        sobre:"Conteúdo, comunicação visual e campanhas." },
     ],
+
     comunicados: [
       { id: uid("COM"), titulo:"Atualização do Wi-Fi visitante", texto:"A rede de cliente foi separada da rede principal. Se precisar de acesso, fale com TI.", data: nowISO() },
       { id: uid("COM"), titulo:"Reunião mensal", texto:"Reunião geral na próxima sexta às 16:30 no auditório.", data: nowISO() },
@@ -135,11 +171,10 @@ function setActiveTab(view){
 }
 function go(view){
   setActiveTab(view);
-  // render específico
   if(view === "home") renderHome();
   if(view === "chamados") renderTickets();
   if(view === "treinamentos") renderTreinos();
-  if(view === "rh") renderRH();
+  if(view === "setores") renderSetores();
   if(view === "comunicados") renderComunicados();
   if(view === "admin") renderAdmin();
 }
@@ -351,68 +386,197 @@ function renderTreinos(){
   });
 }
 
-/* ===== Render: RH ===== */
-function renderRH(){
-  // preencher setores
-  const setores = Array.from(new Set(db.funcionarios.map(f=> f.setor))).sort();
-  const sel = $("rhSetor");
-  const prev = sel.value;
-  sel.innerHTML = `<option value="all">Todos</option>` + setores.map(s=>`<option value="${escapeAttr(s)}">${escapeHtml(s)}</option>`).join("");
-  if(setores.includes(prev)) sel.value = prev;
+/* ===== SETORES / ORGANOGRAMA ===== */
+let setorFiltro = "all";
+let modalFuncionarioId = null;
 
-  const q = ($("rhSearch").value || "").toLowerCase().trim();
-  const st = sel.value;
+function setorDotColor(setor){
+  // só pra diferenciar um pouco as bolinhas
+  const map = {
+    "Donos": "rgba(245,158,11,.95)",
+    "Diretoria": "rgba(76,201,240,.95)",
+    "Financeiro": "rgba(34,197,94,.95)",
+    "RH": "rgba(124,58,237,.95)",
+    "TI": "rgba(239,68,68,.95)",
+    "CPD": "rgba(59,130,246,.95)",
+    "Marketing": "rgba(236,72,153,.95)",
+  };
+  return map[setor] || "rgba(76,201,240,.95)";
+}
 
-  let list = [...db.funcionarios];
-  if(st !== "all") list = list.filter(f=> f.setor === st);
+function renderSetorChips(setores){
+  const wrap = $("setorChips");
+  wrap.innerHTML = "";
+
+  const allBtn = document.createElement("button");
+  allBtn.className = "chipBtn" + (setorFiltro==="all" ? " active" : "");
+  allBtn.textContent = "Todos";
+  allBtn.onclick = ()=>{ setorFiltro="all"; renderSetores(); };
+  wrap.appendChild(allBtn);
+
+  for(const s of setores){
+    const btn = document.createElement("button");
+    btn.className = "chipBtn" + (setorFiltro===s ? " active" : "");
+    btn.textContent = s;
+    btn.onclick = ()=>{ setorFiltro=s; renderSetores(); };
+    wrap.appendChild(btn);
+  }
+}
+
+function renderSetores(){
+  const all = [...db.funcionarios];
+  const setores = Array.from(new Set(all.map(f=>f.setor))).sort((a,b)=> a.localeCompare(b));
+
+  $("statPessoas").textContent = String(all.length);
+  $("statSetores").textContent = String(setores.length);
+
+  renderSetorChips(setores);
+
+  const q = ($("setorSearch").value || "").toLowerCase().trim();
+
+  // filtrar por setor
+  let list = all;
+  if(setorFiltro !== "all"){
+    list = list.filter(f=> f.setor === setorFiltro);
+  }
+  // filtrar por busca
   if(q){
     list = list.filter(f =>
       (f.nome||"").toLowerCase().includes(q) ||
-      (f.setor||"").toLowerCase().includes(q) ||
-      (f.cargo||"").toLowerCase().includes(q)
+      (f.cargo||"").toLowerCase().includes(q) ||
+      (f.setor||"").toLowerCase().includes(q)
     );
   }
-  list.sort((a,b)=> (a.setor+a.nome).localeCompare(b.setor+b.nome));
 
-  const wrap = $("rhCards");
+  // agrupar por setor
+  const group = new Map();
+  for(const f of list){
+    if(!group.has(f.setor)) group.set(f.setor, []);
+    group.get(f.setor).push(f);
+  }
+
+  // ordenar setores por uma ordem "organograma" se existir
+  const preferredOrder = ["Donos","Diretoria","Financeiro","RH","TI","CPD","Marketing"];
+  const sectorKeys = Array.from(group.keys()).sort((a,b)=>{
+    const ia = preferredOrder.indexOf(a);
+    const ib = preferredOrder.indexOf(b);
+    if(ia === -1 && ib === -1) return a.localeCompare(b);
+    if(ia === -1) return 1;
+    if(ib === -1) return -1;
+    return ia - ib;
+  });
+
+  const wrap = $("orgSections");
   wrap.innerHTML = "";
 
-  if(list.length === 0){
-    $("rhEmpty").textContent = "Nenhum funcionário encontrado.";
+  if(sectorKeys.length === 0){
+    $("setoresEmpty").textContent = "Nenhum funcionário encontrado com esses filtros.";
     return;
   }
-  $("rhEmpty").textContent = "";
+  $("setoresEmpty").textContent = "";
 
-  for(const f of list){
-    const div = document.createElement("div");
-    div.className = "itemCard";
-    div.innerHTML = `
-      <h3>${escapeHtml(f.nome)}</h3>
-      <div class="muted small">${escapeHtml(f.cargo)} • ${escapeHtml(f.setor)}</div>
-      <div class="itemMeta">
-        <span class="pill">Ramal: ${escapeHtml(f.ramal || "—")}</span>
-        <span class="pill">Tel: ${escapeHtml(f.telefone || "—")}</span>
-      </div>
-      <div class="row gap" style="margin-top:10px; justify-content:space-between;">
-        <button class="btn small" data-act="contact" data-id="${f.id}">Ver contato</button>
-        <div class="row gap ${isAdmin() ? "" : "hidden"}">
-          <button class="btn small" data-act="edit" data-id="${f.id}">Editar</button>
-          <button class="btn small danger" data-act="del" data-id="${f.id}">Remover</button>
+  for(const setor of sectorKeys){
+    const people = group.get(setor).sort((a,b)=> (a.nome||"").localeCompare(b.nome||""));
+
+    const block = document.createElement("div");
+    block.className = "sectorBlock";
+    block.innerHTML = `
+      <div class="sectorHead">
+        <div class="sectorTitle">
+          <span class="sectorDot" style="background:${setorDotColor(setor)}; box-shadow: 0 0 0 4px ${setorDotColor(setor).replace(".,",",").replace(")",", .12)")};"></span>
+          <h3>${escapeHtml(setor)}</h3>
         </div>
+        <div class="sectorCount">${people.length} pessoa(s)</div>
+      </div>
+      <div class="sectorBody">
+        <div class="peopleGrid" id="grid-${cssSafe(setor)}"></div>
       </div>
     `;
-    wrap.appendChild(div);
-  }
+    wrap.appendChild(block);
 
-  wrap.querySelectorAll("button").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const id = btn.dataset.id;
-      const act = btn.dataset.act;
-      if(act==="contact") rhContact(id);
-      if(act==="edit") formFuncionario(id);
-      if(act==="del") delFuncionario(id);
-    });
-  });
+    const grid = block.querySelector(`#grid-${cssSafe(setor)}`);
+    for(const f of people){
+      const card = document.createElement("div");
+      card.className = "personCard";
+      card.innerHTML = `
+        <h4>${escapeHtml(f.nome)}</h4>
+        <div class="muted small">${escapeHtml(f.cargo)} • ${escapeHtml(f.setor)}</div>
+        <div class="itemMeta">
+          <span class="pill">Ramal: ${escapeHtml(f.ramal || "—")}</span>
+          <span class="pill">Tel: ${escapeHtml(f.telefone || "—")}</span>
+        </div>
+        <div class="muted small" style="margin-top:8px; line-height:1.4;">
+          ${escapeHtml(f.sobre || "")}
+        </div>
+      `;
+      card.addEventListener("click", ()=> openFuncionarioModal(f.id));
+      grid.appendChild(card);
+    }
+  }
+}
+
+function openFuncionarioModal(id){
+  const f = db.funcionarios.find(x=>x.id===id);
+  if(!f) return;
+
+  modalFuncionarioId = id;
+
+  $("setorModalTitle").textContent = f.nome;
+  $("setorModalBody").innerHTML = `
+    <p class="muted">${escapeHtml(f.cargo)} • ${escapeHtml(f.setor)}</p>
+    <div style="height:10px"></div>
+
+    <div class="list">
+      <div class="listItem">
+        <div class="listMain">
+          <strong>Sobre</strong>
+          <div class="muted small">${escapeHtml(f.sobre || "—")}</div>
+        </div>
+      </div>
+      <div class="listItem">
+        <div class="listMain">
+          <strong>E-mail</strong>
+          <div class="muted small">${escapeHtml(f.email || "—")}</div>
+        </div>
+      </div>
+      <div class="listItem">
+        <div class="listMain">
+          <strong>Telefone</strong>
+          <div class="muted small">${escapeHtml(f.telefone || "—")}</div>
+        </div>
+      </div>
+      <div class="listItem">
+        <div class="listMain">
+          <strong>Ramal</strong>
+          <div class="muted small">${escapeHtml(f.ramal || "—")}</div>
+        </div>
+      </div>
+    </div>
+
+    ${isAdmin() ? `
+      <div class="row gap" style="margin-top:12px; justify-content:flex-end;">
+        <button class="btn small danger" id="btnDelFromModal">Remover</button>
+      </div>
+    ` : ""}
+  `;
+
+  showModal("setorModal");
+
+  const delBtn = $("btnDelFromModal");
+  if(delBtn){
+    delBtn.onclick = ()=>{
+      if(confirm("Remover este funcionário?")){
+        db.funcionarios = db.funcionarios.filter(x=>x.id!==id);
+        save(db);
+        closeModal("setorModal");
+        renderSetores();
+      }
+    };
+  }
+}
+
+function cssSafe(s){
+  return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
 }
 
 /* ===== Render: Comunicados ===== */
@@ -456,7 +620,6 @@ function renderComunicados(){
 
 /* ===== Admin: usuários ===== */
 function renderAdmin(){
-  // listar usuários
   const tb = $("userTbody");
   tb.innerHTML = "";
 
@@ -633,9 +796,9 @@ function delTreino(id){
   renderTreinos();
 }
 
-/* ===== Funcionários (RH) CRUD ===== */
+/* ===== Funcionários (Setores) CRUD ===== */
 function formFuncionario(id=null){
-  const item = id ? db.funcionarios.find(x=>x.id===id) : { nome:"", setor:"", cargo:"", email:"", telefone:"", ramal:"" };
+  const item = id ? db.funcionarios.find(x=>x.id===id) : { nome:"", setor:"", cargo:"", email:"", telefone:"", ramal:"", sobre:"" };
   openForm(id ? "Editar funcionário" : "Novo funcionário", `
     <form>
       <label>Nome</label>
@@ -651,6 +814,9 @@ function formFuncionario(id=null){
           <input name="cargo" required value="${escapeAttr(item.cargo)}" />
         </div>
       </div>
+
+      <label>Sobre (funções/responsabilidades)</label>
+      <textarea name="sobre" placeholder="Ex.: Coordena equipe, metas, rotinas...">${escapeHtml(item.sobre || "")}</textarea>
 
       <div class="grid2">
         <div>
@@ -676,6 +842,7 @@ function formFuncionario(id=null){
       nome: fd.get("nome"),
       setor: fd.get("setor"),
       cargo: fd.get("cargo"),
+      sobre: fd.get("sobre") || "",
       email: fd.get("email") || "",
       telefone: fd.get("telefone") || "",
       ramal: fd.get("ramal") || ""
@@ -687,47 +854,10 @@ function formFuncionario(id=null){
     }
     save(db);
     closeModal("formModal");
-    renderRH();
+    renderSetores();
   });
 
   $("cancelF").onclick = ()=> closeModal("formModal");
-}
-function delFuncionario(id){
-  if(!confirm("Remover este funcionário?")) return;
-  db.funcionarios = db.funcionarios.filter(x=>x.id!==id);
-  save(db);
-  renderRH();
-}
-function rhContact(id){
-  const f = db.funcionarios.find(x=>x.id===id);
-  if(!f) return;
-
-  $("rhModalTitle").textContent = f.nome;
-  $("rhModalBody").innerHTML = `
-    <p class="muted">${escapeHtml(f.cargo)} • ${escapeHtml(f.setor)}</p>
-    <div style="height:10px"></div>
-    <div class="list">
-      <div class="listItem">
-        <div class="listMain">
-          <strong>E-mail</strong>
-          <div class="muted small">${escapeHtml(f.email || "—")}</div>
-        </div>
-      </div>
-      <div class="listItem">
-        <div class="listMain">
-          <strong>Telefone</strong>
-          <div class="muted small">${escapeHtml(f.telefone || "—")}</div>
-        </div>
-      </div>
-      <div class="listItem">
-        <div class="listMain">
-          <strong>Ramal</strong>
-          <div class="muted small">${escapeHtml(f.ramal || "—")}</div>
-        </div>
-      </div>
-    </div>
-  `;
-  showModal("rhModal");
 }
 
 /* ===== Comunicados CRUD ===== */
@@ -985,7 +1115,6 @@ function boot(){
 
   // Fechar modais
   $("btnFormClose").addEventListener("click", ()=> closeModal("formModal"));
-  $("btnRhClose").addEventListener("click", ()=> closeModal("rhModal"));
 
   // Home actions
   $("btnAddEscala").addEventListener("click", ()=> isAdmin() && formEscala(null));
@@ -1001,10 +1130,20 @@ function boot(){
   // Treinos actions
   $("btnAddTreino").addEventListener("click", ()=> isAdmin() && formTreino(null));
 
-  // RH actions
+  // Setores actions
   $("btnAddFuncionario").addEventListener("click", ()=> isAdmin() && formFuncionario(null));
-  $("rhSearch").addEventListener("input", renderRH);
-  $("rhSetor").addEventListener("change", renderRH);
+  $("setorSearch").addEventListener("input", renderSetores);
+  $("btnClearSetor").addEventListener("click", ()=>{
+    $("setorSearch").value = "";
+    setorFiltro = "all";
+    renderSetores();
+  });
+  $("btnSetorClose").addEventListener("click", ()=> closeModal("setorModal"));
+  $("btnEditFromModal").addEventListener("click", ()=>{
+    if(!isAdmin() || !modalFuncionarioId) return;
+    closeModal("setorModal");
+    formFuncionario(modalFuncionarioId);
+  });
 
   // Comunicados actions
   $("btnAddComunicado").addEventListener("click", ()=> isAdmin() && formComunicado(null));
