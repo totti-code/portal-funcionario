@@ -1,10 +1,3 @@
-/* =========================
-   Martree Portal (Front-end)
-   - Login local (demo)
-   - Controle de role (admin/user)
-   - CRUD Admin: escalas, aniversariantes, treinamentos, comunicados, setores(funcionários), usuários, chamados
-   ========================= */
-
 const $ = (id) => document.getElementById(id);
 
 const KEY = "martree_portal_v1";
@@ -46,7 +39,7 @@ function clearSession(){
   localStorage.removeItem(SESSION_KEY);
 }
 
-/* ===== Seed (dados fictícios) ===== */
+/* ===== Seed ===== */
 function seed(){
   const db = {
     users: [
@@ -67,54 +60,28 @@ function seed(){
       { id: uid("TR"), titulo:"Boas práticas de atendimento", desc:"Como registrar chamados com clareza e prioridade.", link:"", updatedAt: nowISO() },
       { id: uid("TR"), titulo:"Segurança da informação básica", desc:"Dicas rápidas para evitar golpes e vazamentos.", link:"", updatedAt: nowISO() },
     ],
-
-    // 👇 Agora essa lista é a base do "Setores / Organograma"
     funcionarios: [
-      // Donos
-      { id: uid("F"), nome:"Sr. Itamar", setor:"Donos", cargo:"Sócio Proprietário", email:"itamar@martree.com", telefone:"(85) 99999-1001", ramal:"101",
-        sobre:"Define estratégias e decisões principais da empresa." },
-      { id: uid("F"), nome:"Dona Virgínia", setor:"Donos", cargo:"Sócia Proprietária", email:"virginia@martree.com", telefone:"(85) 99999-1002", ramal:"102",
-        sobre:"Apoia decisões, cultura e organização geral da empresa." },
+      { id: uid("F"), nome:"Sr. Itamar", setor:"Donos", cargo:"Sócio Proprietário", email:"itamar@martree.com", telefone:"(85) 99999-1001", ramal:"101", sobre:"Define estratégias e decisões principais da empresa." },
+      { id: uid("F"), nome:"Dona Virgínia", setor:"Donos", cargo:"Sócia Proprietária", email:"virginia@martree.com", telefone:"(85) 99999-1002", ramal:"102", sobre:"Apoia decisões, cultura e organização geral da empresa." },
+      { id: uid("F"), nome:"Rogério", setor:"Diretoria", cargo:"Diretor Geral", email:"rogerio@martree.com", telefone:"(85) 99999-1101", ramal:"111", sobre:"Coordena setores e garante metas e alinhamento geral." },
 
-      // Diretoria
-      { id: uid("F"), nome:"Rogério", setor:"Diretoria", cargo:"Diretor Geral", email:"rogerio@martree.com", telefone:"(85) 99999-1101", ramal:"111",
-        sobre:"Coordena setores e garante metas e alinhamento geral." },
+      { id: uid("F"), nome:"Jakeline", setor:"Financeiro", cargo:"Financeiro", email:"jakeline@martree.com", telefone:"(85) 99999-1201", ramal:"121", sobre:"Fluxo de caixa, pagamentos e relatórios financeiros." },
+      { id: uid("F"), nome:"Rayssa", setor:"Financeiro", cargo:"Financeiro", email:"rayssa@martree.com", telefone:"(85) 99999-1202", ramal:"122", sobre:"Conciliações, lançamentos e suporte ao contas a pagar." },
+      { id: uid("F"), nome:"Luana", setor:"Financeiro", cargo:"Financeiro", email:"luana@martree.com", telefone:"(85) 99999-1203", ramal:"123", sobre:"Cobrança, controle de despesas e apoio na prestação de contas." },
 
-      // Financeiro
-      { id: uid("F"), nome:"Jakeline", setor:"Financeiro", cargo:"Financeiro", email:"jakeline@martree.com", telefone:"(85) 99999-1201", ramal:"121",
-        sobre:"Fluxo de caixa, pagamentos e relatórios financeiros." },
-      { id: uid("F"), nome:"Rayssa", setor:"Financeiro", cargo:"Financeiro", email:"rayssa@martree.com", telefone:"(85) 99999-1202", ramal:"122",
-        sobre:"Conciliações, lançamentos e suporte ao contas a pagar." },
-      { id: uid("F"), nome:"Luana", setor:"Financeiro", cargo:"Financeiro", email:"luana@martree.com", telefone:"(85) 99999-1203", ramal:"123",
-        sobre:"Cobrança, controle de despesas e apoio na prestação de contas." },
+      { id: uid("F"), nome:"Jociely Souza", setor:"RH", cargo:"Analista de RH", email:"rh@martree.com", telefone:"(85) 99999-0001", ramal:"201", sobre:"Processos de RH, admissões e rotinas internas." },
+      { id: uid("F"), nome:"Alani Costa", setor:"RH", cargo:"Assistente de RH", email:"alani@martree.com", telefone:"(85) 99999-0002", ramal:"202", sobre:"Apoio em documentações e atendimento ao colaborador." },
+      { id: uid("F"), nome:"Beatriz Lima", setor:"RH", cargo:"Auxiliar de RH", email:"beatriz@martree.com", telefone:"(85) 99999-0003", ramal:"203", sobre:"Arquivos, formulários e suporte ao setor." },
 
-      // RH
-      { id: uid("F"), nome:"Jociely Souza", setor:"RH", cargo:"Analista de RH", email:"rh@martree.com", telefone:"(85) 99999-0001", ramal:"201",
-        sobre:"Processos de RH, admissões e rotinas internas." },
-      { id: uid("F"), nome:"Alani Costa", setor:"RH", cargo:"Assistente de RH", email:"alani@martree.com", telefone:"(85) 99999-0002", ramal:"202",
-        sobre:"Apoio em documentações e atendimento ao colaborador." },
-      { id: uid("F"), nome:"Beatriz Lima", setor:"RH", cargo:"Auxiliar de RH", email:"beatriz@martree.com", telefone:"(85) 99999-0003", ramal:"203",
-        sobre:"Arquivos, formulários e suporte ao setor." },
+      { id: uid("F"), nome:"Felipe Santos", setor:"TI", cargo:"Suporte", email:"felipe@martree.com", telefone:"(85) 99999-0101", ramal:"301", sobre:"Chamados, manutenção e suporte aos usuários." },
+      { id: uid("F"), nome:"Ismael Rocha", setor:"TI", cargo:"Infra", email:"ismael@martree.com", telefone:"(85) 99999-0102", ramal:"302", sobre:"Rede, servidores, backups e infraestrutura." },
 
-      // TI
-      { id: uid("F"), nome:"Felipe Santos", setor:"TI", cargo:"Suporte", email:"felipe@martree.com", telefone:"(85) 99999-0101", ramal:"301",
-        sobre:"Chamados, manutenção e suporte aos usuários." },
-      { id: uid("F"), nome:"Ismael Rocha", setor:"TI", cargo:"Infra", email:"ismael@martree.com", telefone:"(85) 99999-0102", ramal:"302",
-        sobre:"Rede, servidores, backups e infraestrutura." },
+      { id: uid("F"), nome:"Maria Oliveira", setor:"CPD", cargo:"Operadora", email:"maria@martree.com", telefone:"(85) 99999-0201", ramal:"401", sobre:"Rotinas do CPD e suporte operacional." },
+      { id: uid("F"), nome:"Anderson Lima", setor:"CPD", cargo:"Operador", email:"anderson@martree.com", telefone:"(85) 99999-0202", ramal:"402", sobre:"Acompanhamento de processos e apoio ao CPD." },
+      { id: uid("F"), nome:"Gladstone Souza", setor:"CPD", cargo:"Operador", email:"gladstone@martree.com", telefone:"(85) 99999-0203", ramal:"403", sobre:"Monitoramento e apoio aos sistemas internos." },
 
-      // CPD
-      { id: uid("F"), nome:"Maria Oliveira", setor:"CPD", cargo:"Operadora", email:"maria@martree.com", telefone:"(85) 99999-0201", ramal:"401",
-        sobre:"Rotinas do CPD e suporte operacional." },
-      { id: uid("F"), nome:"Anderson Lima", setor:"CPD", cargo:"Operador", email:"anderson@martree.com", telefone:"(85) 99999-0202", ramal:"402",
-        sobre:"Acompanhamento de processos e apoio ao CPD." },
-      { id: uid("F"), nome:"Gladstone Souza", setor:"CPD", cargo:"Operador", email:"gladstone@martree.com", telefone:"(85) 99999-0203", ramal:"403",
-        sobre:"Monitoramento e apoio aos sistemas internos." },
-
-      // Marketing (exemplo)
-      { id: uid("F"), nome:"Larissa", setor:"Marketing", cargo:"Marketing", email:"larissa@martree.com", telefone:"(85) 99999-1301", ramal:"131",
-        sobre:"Conteúdo, comunicação visual e campanhas." },
+      { id: uid("F"), nome:"Larissa", setor:"Marketing", cargo:"Marketing", email:"larissa@martree.com", telefone:"(85) 99999-1301", ramal:"131", sobre:"Conteúdo, comunicação visual e campanhas." },
     ],
-
     comunicados: [
       { id: uid("COM"), titulo:"Atualização do Wi-Fi visitante", texto:"A rede de cliente foi separada da rede principal. Se precisar de acesso, fale com TI.", data: nowISO() },
       { id: uid("COM"), titulo:"Reunião mensal", texto:"Reunião geral na próxima sexta às 16:30 no auditório.", data: nowISO() },
@@ -148,15 +115,14 @@ function closeModal(id){
   m.setAttribute("aria-hidden","true");
 }
 
-function isAdmin(){
-  return session?.role === "admin";
-}
+function isAdmin(){ return session?.role === "admin"; }
+
 function setAdminUI(){
   document.querySelectorAll(".adminOnly").forEach(el=>{
     el.style.display = isAdmin() ? "" : "none";
   });
   $("whoName").textContent = session?.name || session?.username || "—";
-  $("whoRole").textContent = session?.role === "admin" ? "admin" : "usuário";
+  $("whoRole").textContent = isAdmin() ? "admin" : "usuário";
   $("whoRole").style.borderColor = isAdmin() ? "rgba(124,58,237,.55)" : "rgba(76,201,240,.55)";
   $("whoRole").style.background = isAdmin() ? "rgba(124,58,237,.18)" : "rgba(76,201,240,.12)";
 }
@@ -204,9 +170,9 @@ function logout(){
 
 /* ===== Render: Home ===== */
 function renderHome(){
-  // Escalas
   const list = $("escalaList");
   list.innerHTML = "";
+
   if(db.escalas.length === 0){
     $("escalaEmpty").textContent = "Nenhuma escala cadastrada.";
   }else{
@@ -237,12 +203,12 @@ function renderHome(){
     });
   }
 
-  // Aniversariantes (mês atual)
   const month = new Date().getMonth()+1;
   const bdays = db.aniversariantes.filter(a=> a.mes === month).sort((a,b)=>a.dia-b.dia);
 
   const bl = $("bdayList");
   bl.innerHTML = "";
+
   if(bdays.length === 0){
     $("bdayEmpty").textContent = "Nenhum aniversariante cadastrado para este mês.";
   }else{
@@ -273,7 +239,7 @@ function renderHome(){
   }
 }
 
-/* ===== Render: Chamados ===== */
+/* ===== Chamados ===== */
 function statusPill(s){
   const cls = s==="resolvido" ? "ok" : (s==="andamento" ? "warn" : "bad");
   return `<span class="pill ${cls}">${escapeHtml(s)}</span>`;
@@ -289,7 +255,6 @@ function renderTickets(){
 
   let list = [...db.tickets];
 
-  // usuário comum vê somente os seus chamados
   if(!isAdmin()){
     list = list.filter(t => t.solicitante === session.username);
   }
@@ -305,7 +270,6 @@ function renderTickets(){
   if(st !== "all") list = list.filter(t=> t.status === st);
   if(pr !== "all") list = list.filter(t=> t.prioridade === pr);
 
-  // ordena por data (mais recente primeiro)
   list.sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
 
   const tb = $("ticketTbody");
@@ -313,42 +277,43 @@ function renderTickets(){
 
   if(list.length === 0){
     $("ticketEmpty").textContent = "Nenhum chamado encontrado.";
-  }else{
-    $("ticketEmpty").textContent = "";
-    for(const t of list){
-      const canEdit = isAdmin();
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><code>${escapeHtml(t.id)}</code></td>
-        <td class="muted small">${escapeHtml(t.createdAt)}</td>
-        <td><strong>${escapeHtml(t.titulo)}</strong><div class="muted small">${escapeHtml(t.desc)}</div></td>
-        <td>${escapeHtml(t.solicitante)}</td>
-        <td>${prioPill(t.prioridade)}</td>
-        <td>${statusPill(t.status)}</td>
-        <td>
-          <div class="row gap">
-            <button class="btn small" data-act="view" data-id="${t.id}">Ver</button>
-            ${canEdit ? `<button class="btn small" data-act="edit" data-id="${t.id}">Editar</button>` : ""}
-            ${canEdit ? `<button class="btn small danger" data-act="del" data-id="${t.id}">Remover</button>` : ""}
-          </div>
-        </td>
-      `;
-      tb.appendChild(tr);
-    }
-
-    tb.querySelectorAll("button").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        const id = b.dataset.id;
-        const act = b.dataset.act;
-        if(act==="view") viewTicket(id);
-        if(act==="edit") formTicket(id);
-        if(act==="del") delTicket(id);
-      });
-    });
+    return;
   }
+  $("ticketEmpty").textContent = "";
+
+  for(const t of list){
+    const canEdit = isAdmin();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><code>${escapeHtml(t.id)}</code></td>
+      <td class="muted small">${escapeHtml(t.createdAt)}</td>
+      <td><strong>${escapeHtml(t.titulo)}</strong><div class="muted small">${escapeHtml(t.desc)}</div></td>
+      <td>${escapeHtml(t.solicitante)}</td>
+      <td>${prioPill(t.prioridade)}</td>
+      <td>${statusPill(t.status)}</td>
+      <td>
+        <div class="row gap">
+          <button class="btn small" data-act="view" data-id="${t.id}">Ver</button>
+          ${canEdit ? `<button class="btn small" data-act="edit" data-id="${t.id}">Editar</button>` : ""}
+          ${canEdit ? `<button class="btn small danger" data-act="del" data-id="${t.id}">Remover</button>` : ""}
+        </div>
+      </td>
+    `;
+    tb.appendChild(tr);
+  }
+
+  tb.querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const id = b.dataset.id;
+      const act = b.dataset.act;
+      if(act==="view") viewTicket(id);
+      if(act==="edit") formTicket(id);
+      if(act==="del") delTicket(id);
+    });
+  });
 }
 
-/* ===== Render: Treinamentos ===== */
+/* ===== Treinamentos ===== */
 function renderTreinos(){
   const wrap = $("treinoCards");
   wrap.innerHTML = "";
@@ -376,6 +341,7 @@ function renderTreinos(){
     `;
     wrap.appendChild(div);
   }
+
   wrap.querySelectorAll("button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       const id = btn.dataset.id;
@@ -386,12 +352,11 @@ function renderTreinos(){
   });
 }
 
-/* ===== SETORES / ORGANOGRAMA ===== */
+/* ===== Setores / Organograma ===== */
 let setorFiltro = "all";
 let modalFuncionarioId = null;
 
 function setorDotColor(setor){
-  // só pra diferenciar um pouco as bolinhas
   const map = {
     "Donos": "rgba(245,158,11,.95)",
     "Diretoria": "rgba(76,201,240,.95)",
@@ -434,12 +399,8 @@ function renderSetores(){
 
   const q = ($("setorSearch").value || "").toLowerCase().trim();
 
-  // filtrar por setor
   let list = all;
-  if(setorFiltro !== "all"){
-    list = list.filter(f=> f.setor === setorFiltro);
-  }
-  // filtrar por busca
+  if(setorFiltro !== "all") list = list.filter(f=> f.setor === setorFiltro);
   if(q){
     list = list.filter(f =>
       (f.nome||"").toLowerCase().includes(q) ||
@@ -448,14 +409,12 @@ function renderSetores(){
     );
   }
 
-  // agrupar por setor
   const group = new Map();
   for(const f of list){
     if(!group.has(f.setor)) group.set(f.setor, []);
     group.get(f.setor).push(f);
   }
 
-  // ordenar setores por uma ordem "organograma" se existir
   const preferredOrder = ["Donos","Diretoria","Financeiro","RH","TI","CPD","Marketing"];
   const sectorKeys = Array.from(group.keys()).sort((a,b)=>{
     const ia = preferredOrder.indexOf(a);
@@ -483,7 +442,7 @@ function renderSetores(){
     block.innerHTML = `
       <div class="sectorHead">
         <div class="sectorTitle">
-          <span class="sectorDot" style="background:${setorDotColor(setor)}; box-shadow: 0 0 0 4px ${setorDotColor(setor).replace(".,",",").replace(")",", .12)")};"></span>
+          <span class="sectorDot" style="background:${setorDotColor(setor)}"></span>
           <h3>${escapeHtml(setor)}</h3>
         </div>
         <div class="sectorCount">${people.length} pessoa(s)</div>
@@ -579,7 +538,7 @@ function cssSafe(s){
   return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
 }
 
-/* ===== Render: Comunicados ===== */
+/* ===== Comunicados ===== */
 function renderComunicados(){
   const wrap = $("comList");
   wrap.innerHTML = "";
@@ -608,6 +567,7 @@ function renderComunicados(){
     `;
     wrap.appendChild(div);
   }
+
   wrap.querySelectorAll("button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       const id = btn.dataset.id;
@@ -618,7 +578,7 @@ function renderComunicados(){
   });
 }
 
-/* ===== Admin: usuários ===== */
+/* ===== Admin ===== */
 function renderAdmin(){
   const tb = $("userTbody");
   tb.innerHTML = "";
@@ -631,7 +591,7 @@ function renderAdmin(){
       <td>${escapeHtml(u.role)}</td>
       <td>
         <div class="row gap">
-          ${u.username !== "admin" ? `<button class="btn small danger" data-act="del" data-u="${u.username}">Remover</button>` : `<span class="muted small">fixo</span>`}
+          ${u.username !== "admin" ? `<button class="btn small danger" data-u="${u.username}">Remover</button>` : `<span class="muted small">fixo</span>`}
         </div>
       </td>
     `;
@@ -650,9 +610,7 @@ function renderAdmin(){
   });
 }
 
-/* =========================
-   FORM MODAL (genérico)
-   ========================= */
+/* ===== Modal genérico ===== */
 function openForm(title, html, onSubmit){
   $("formTitle").textContent = title;
   $("formBody").innerHTML = html;
@@ -666,17 +624,15 @@ function openForm(title, html, onSubmit){
   });
 }
 
-/* ===== Escala CRUD ===== */
+/* ===== CRUD Escala ===== */
 function formEscala(id=null){
   const item = id ? db.escalas.find(x=>x.id===id) : { titulo:"", texto:"" };
   openForm(id ? "Editar escala" : "Nova escala", `
     <form>
       <label>Título</label>
       <input name="titulo" required value="${escapeAttr(item.titulo)}" />
-
       <label>Texto</label>
       <textarea name="texto" required>${escapeHtml(item.texto)}</textarea>
-
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">${id ? "Salvar" : "Adicionar"}</button>
         <button type="button" class="btn ghost" id="cancelEsc">Cancelar</button>
@@ -684,16 +640,12 @@ function formEscala(id=null){
     </form>
   `, (fd)=>{
     const obj = { titulo: fd.get("titulo"), texto: fd.get("texto") };
-    if(id){
-      Object.assign(item, obj, { updatedAt: nowISO() });
-    }else{
-      db.escalas.unshift({ id: uid("ESC"), ...obj, updatedAt: nowISO() });
-    }
+    if(id) Object.assign(item, obj, { updatedAt: nowISO() });
+    else db.escalas.unshift({ id: uid("ESC"), ...obj, updatedAt: nowISO() });
     save(db);
     closeModal("formModal");
     renderHome();
   });
-
   $("cancelEsc").onclick = ()=> closeModal("formModal");
 }
 function delEscala(id){
@@ -703,14 +655,13 @@ function delEscala(id){
   renderHome();
 }
 
-/* ===== Aniversariantes CRUD ===== */
+/* ===== CRUD Aniversariantes ===== */
 function formBday(id=null){
   const item = id ? db.aniversariantes.find(x=>x.id===id) : { nome:"", dia:1, mes:new Date().getMonth()+1, setor:"" };
   openForm(id ? "Editar aniversariante" : "Novo aniversariante", `
     <form>
       <label>Nome</label>
       <input name="nome" required value="${escapeAttr(item.nome)}" />
-
       <div class="grid2">
         <div>
           <label>Dia</label>
@@ -721,32 +672,21 @@ function formBday(id=null){
           <input name="mes" type="number" min="1" max="12" required value="${escapeAttr(item.mes)}" />
         </div>
       </div>
-
       <label>Setor</label>
       <input name="setor" value="${escapeAttr(item.setor)}" />
-
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">${id ? "Salvar" : "Adicionar"}</button>
         <button type="button" class="btn ghost" id="cancelB">Cancelar</button>
       </div>
     </form>
   `, (fd)=>{
-    const obj = {
-      nome: fd.get("nome"),
-      dia: Number(fd.get("dia")),
-      mes: Number(fd.get("mes")),
-      setor: fd.get("setor") || ""
-    };
-    if(id){
-      Object.assign(item, obj);
-    }else{
-      db.aniversariantes.push({ id: uid("ANIV"), ...obj });
-    }
+    const obj = { nome: fd.get("nome"), dia: Number(fd.get("dia")), mes: Number(fd.get("mes")), setor: fd.get("setor") || "" };
+    if(id) Object.assign(item, obj);
+    else db.aniversariantes.push({ id: uid("ANIV"), ...obj });
     save(db);
     closeModal("formModal");
     renderHome();
   });
-
   $("cancelB").onclick = ()=> closeModal("formModal");
 }
 function delBday(id){
@@ -756,20 +696,17 @@ function delBday(id){
   renderHome();
 }
 
-/* ===== Treinamentos CRUD ===== */
+/* ===== CRUD Treinamentos ===== */
 function formTreino(id=null){
   const item = id ? db.treinamentos.find(x=>x.id===id) : { titulo:"", desc:"", link:"" };
   openForm(id ? "Editar treinamento" : "Novo treinamento", `
     <form>
       <label>Título</label>
       <input name="titulo" required value="${escapeAttr(item.titulo)}" />
-
       <label>Descrição</label>
       <textarea name="desc" required>${escapeHtml(item.desc)}</textarea>
-
       <label>Link (opcional)</label>
       <input name="link" placeholder="https://..." value="${escapeAttr(item.link || "")}" />
-
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">${id ? "Salvar" : "Adicionar"}</button>
         <button type="button" class="btn ghost" id="cancelT">Cancelar</button>
@@ -777,16 +714,12 @@ function formTreino(id=null){
     </form>
   `, (fd)=>{
     const obj = { titulo: fd.get("titulo"), desc: fd.get("desc"), link: fd.get("link") || "" };
-    if(id){
-      Object.assign(item, obj, { updatedAt: nowISO() });
-    }else{
-      db.treinamentos.unshift({ id: uid("TR"), ...obj, updatedAt: nowISO() });
-    }
+    if(id) Object.assign(item, obj, { updatedAt: nowISO() });
+    else db.treinamentos.unshift({ id: uid("TR"), ...obj, updatedAt: nowISO() });
     save(db);
     closeModal("formModal");
     renderTreinos();
   });
-
   $("cancelT").onclick = ()=> closeModal("formModal");
 }
 function delTreino(id){
@@ -796,28 +729,25 @@ function delTreino(id){
   renderTreinos();
 }
 
-/* ===== Funcionários (Setores) CRUD ===== */
+/* ===== CRUD Funcionários (Setores) ===== */
 function formFuncionario(id=null){
   const item = id ? db.funcionarios.find(x=>x.id===id) : { nome:"", setor:"", cargo:"", email:"", telefone:"", ramal:"", sobre:"" };
   openForm(id ? "Editar funcionário" : "Novo funcionário", `
     <form>
       <label>Nome</label>
       <input name="nome" required value="${escapeAttr(item.nome)}" />
-
       <div class="grid2">
         <div>
-          <label>Setor</label>
-          <input name="setor" required value="${escapeAttr(item.setor)}" />
+          <label>Setor (pode criar novo)</label>
+          <input name="setor" required value="${escapeAttr(item.setor)}" placeholder="Ex.: CPD, RH, TI, Marketing..." />
         </div>
         <div>
           <label>Cargo</label>
           <input name="cargo" required value="${escapeAttr(item.cargo)}" />
         </div>
       </div>
-
       <label>Sobre (funções/responsabilidades)</label>
       <textarea name="sobre" placeholder="Ex.: Coordena equipe, metas, rotinas...">${escapeHtml(item.sobre || "")}</textarea>
-
       <div class="grid2">
         <div>
           <label>E-mail</label>
@@ -828,10 +758,8 @@ function formFuncionario(id=null){
           <input name="telefone" value="${escapeAttr(item.telefone)}" />
         </div>
       </div>
-
       <label>Ramal</label>
       <input name="ramal" value="${escapeAttr(item.ramal)}" />
-
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">${id ? "Salvar" : "Adicionar"}</button>
         <button type="button" class="btn ghost" id="cancelF">Cancelar</button>
@@ -847,30 +775,24 @@ function formFuncionario(id=null){
       telefone: fd.get("telefone") || "",
       ramal: fd.get("ramal") || ""
     };
-    if(id){
-      Object.assign(item, obj);
-    }else{
-      db.funcionarios.unshift({ id: uid("F"), ...obj });
-    }
+    if(id) Object.assign(item, obj);
+    else db.funcionarios.unshift({ id: uid("F"), ...obj });
     save(db);
     closeModal("formModal");
     renderSetores();
   });
-
   $("cancelF").onclick = ()=> closeModal("formModal");
 }
 
-/* ===== Comunicados CRUD ===== */
+/* ===== CRUD Comunicados ===== */
 function formComunicado(id=null){
   const item = id ? db.comunicados.find(x=>x.id===id) : { titulo:"", texto:"" };
   openForm(id ? "Editar comunicado" : "Novo comunicado", `
     <form>
       <label>Título</label>
       <input name="titulo" required value="${escapeAttr(item.titulo)}" />
-
       <label>Texto</label>
       <textarea name="texto" required>${escapeHtml(item.texto)}</textarea>
-
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">${id ? "Salvar" : "Publicar"}</button>
         <button type="button" class="btn ghost" id="cancelC">Cancelar</button>
@@ -878,16 +800,12 @@ function formComunicado(id=null){
     </form>
   `, (fd)=>{
     const obj = { titulo: fd.get("titulo"), texto: fd.get("texto") };
-    if(id){
-      Object.assign(item, obj, { data: nowISO() });
-    }else{
-      db.comunicados.unshift({ id: uid("COM"), ...obj, data: nowISO() });
-    }
+    if(id) Object.assign(item, obj, { data: nowISO() });
+    else db.comunicados.unshift({ id: uid("COM"), ...obj, data: nowISO() });
     save(db);
     closeModal("formModal");
     renderComunicados();
   });
-
   $("cancelC").onclick = ()=> closeModal("formModal");
 }
 function delComunicado(id){
@@ -897,9 +815,9 @@ function delComunicado(id){
   renderComunicados();
 }
 
-/* ===== Chamados (tickets) ===== */
-function formTicket(id=null){
-  const item = id ? db.tickets.find(x=>x.id===id) : null;
+/* ===== Chamados CRUD (admin) ===== */
+function formTicket(id){
+  const item = db.tickets.find(x=>x.id===id);
   if(!item) return;
 
   openForm("Editar chamado (Admin)", `
@@ -918,10 +836,8 @@ function formTicket(id=null){
           </select>
         </div>
       </div>
-
       <label>Resposta/Observação</label>
       <textarea name="resposta">${escapeHtml(item.resposta || "")}</textarea>
-
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">Salvar</button>
         <button type="button" class="btn ghost" id="cancelCH">Cancelar</button>
@@ -955,34 +871,16 @@ function viewTicket(id){
             ${statusPill(t.status)}
           </div>
         </div>
-        <div class="listItem">
-          <div class="listMain">
-            <strong>Solicitante</strong>
-            <div class="muted small">${escapeHtml(t.solicitante)}</div>
-          </div>
-        </div>
-        <div class="listItem">
-          <div class="listMain">
-            <strong>Data</strong>
-            <div class="muted small">${escapeHtml(t.createdAt)}</div>
-          </div>
-        </div>
-        <div class="listItem">
-          <div class="listMain">
-            <strong>Resposta</strong>
-            <div class="muted small">${escapeHtml(t.resposta || "—")}</div>
-          </div>
-        </div>
+        <div class="listItem"><div class="listMain"><strong>Solicitante</strong><div class="muted small">${escapeHtml(t.solicitante)}</div></div></div>
+        <div class="listItem"><div class="listMain"><strong>Data</strong><div class="muted small">${escapeHtml(t.createdAt)}</div></div></div>
+        <div class="listItem"><div class="listMain"><strong>Resposta</strong><div class="muted small">${escapeHtml(t.resposta || "—")}</div></div></div>
       </div>
-
       <div class="row gap" style="margin-top:12px;">
         <button type="button" class="btn ghost" id="closeView">Fechar</button>
         ${isAdmin() ? `<button type="button" class="btn" id="goEdit">Editar</button>` : ""}
       </div>
     </form>
-  `, ()=>{
-    // não usa submit aqui
-  });
+  `, ()=>{});
 
   $("closeView").onclick = ()=> closeModal("formModal");
   const goEdit = $("goEdit");
@@ -1002,15 +900,10 @@ function newTicket(){
     <form>
       <label>Título</label>
       <input name="titulo" required placeholder="Ex.: PDV sem conexão" />
-
       <label>Descrição</label>
       <textarea name="desc" required placeholder="Explique o problema e onde ocorreu..."></textarea>
-
       <label>Prioridade</label>
-      <select name="prioridade" required>
-        ${opt("media", ["baixa","media","alta"])}
-      </select>
-
+      <select name="prioridade" required>${opt("media", ["baixa","media","alta"])}</select>
       <div class="row gap" style="margin-top:12px;">
         <button class="btn">Criar chamado</button>
         <button type="button" class="btn ghost" id="cancelNew">Cancelar</button>
@@ -1032,25 +925,19 @@ function newTicket(){
     closeModal("formModal");
     go("chamados");
   });
-
   $("cancelNew").onclick = ()=> closeModal("formModal");
 }
 
-/* ===== Admin users ===== */
+/* ===== Admin Users ===== */
 function addUser(){
   const username = ($("newU").value || "").trim().toLowerCase();
   const password = ($("newP").value || "").trim();
   const name = ($("newName").value || "").trim();
   const job = ($("newJob").value || "").trim();
 
-  if(!username || !password){
-    alert("Informe usuário e senha.");
-    return;
-  }
-  if(db.users.some(u=>u.username===username)){
-    alert("Usuário já existe.");
-    return;
-  }
+  if(!username || !password){ alert("Informe usuário e senha."); return; }
+  if(db.users.some(u=>u.username===username)){ alert("Usuário já existe."); return; }
+
   db.users.push({ username, password, role:"user", name: name || username, job: job || "" });
   save(db);
 
@@ -1064,14 +951,14 @@ function addUser(){
 
 /* ===== Reset ===== */
 function resetAll(){
-  if(!confirm("Isso vai resetar TODOS os dados do portal no seu navegador. Continuar?")) return;
+  if(!confirm("Isso vai resetar TODOS os dados no seu navegador. Continuar?")) return;
   localStorage.removeItem(KEY);
   db = seed();
   alert("Dados resetados.");
   go("home");
 }
 
-/* ===== Escape ===== */
+/* ===== Utils ===== */
 function escapeHtml(s){
   return String(s ?? "")
     .replaceAll("&","&amp;")
@@ -1087,15 +974,12 @@ function opt(selected, arr){
 }
 
 /* =========================
-   Eventos / Boot
+   BOOT / EVENTOS
    ========================= */
 function boot(){
   // Tabs
   document.querySelectorAll(".tab").forEach(b=>{
-    b.addEventListener("click", ()=>{
-      const v = b.dataset.view;
-      go(v);
-    });
+    b.addEventListener("click", ()=> go(b.dataset.view));
   });
 
   // Login
@@ -1105,32 +989,29 @@ function boot(){
     const res = doLogin(u,p);
     $("loginMsg").textContent = res.ok ? "" : res.msg;
   });
-  $("btnUseDemo").addEventListener("click", ()=>{
-    const res = doLogin("admin","martree123");
-    $("loginMsg").textContent = res.ok ? "" : res.msg;
-  });
+  $("btnUseDemo").addEventListener("click", ()=> doLogin("admin","martree123"));
 
   // Logout
   $("btnLogout").addEventListener("click", logout);
 
-  // Fechar modais
+  // Fechar modal genérico
   $("btnFormClose").addEventListener("click", ()=> closeModal("formModal"));
 
-  // Home actions
+  // HOME adicionar
   $("btnAddEscala").addEventListener("click", ()=> isAdmin() && formEscala(null));
   $("btnAddBday").addEventListener("click", ()=> isAdmin() && formBday(null));
 
-  // Chamados actions
+  // CHAMADOS
   $("btnNewTicket").addEventListener("click", newTicket);
   ["ticketSearch","ticketStatus","ticketPrioridade"].forEach(id=>{
     $(id).addEventListener("input", renderTickets);
     $(id).addEventListener("change", renderTickets);
   });
 
-  // Treinos actions
+  // TREINAMENTOS adicionar
   $("btnAddTreino").addEventListener("click", ()=> isAdmin() && formTreino(null));
 
-  // Setores actions
+  // SETORES adicionar
   $("btnAddFuncionario").addEventListener("click", ()=> isAdmin() && formFuncionario(null));
   $("setorSearch").addEventListener("input", renderSetores);
   $("btnClearSetor").addEventListener("click", ()=>{
@@ -1145,10 +1026,10 @@ function boot(){
     formFuncionario(modalFuncionarioId);
   });
 
-  // Comunicados actions
+  // COMUNICADOS adicionar
   $("btnAddComunicado").addEventListener("click", ()=> isAdmin() && formComunicado(null));
 
-  // Admin actions
+  // ADMIN
   $("btnAddUser").addEventListener("click", ()=> isAdmin() && addUser());
   $("btnResetAll").addEventListener("click", ()=> isAdmin() && resetAll());
 
