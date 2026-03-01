@@ -82,7 +82,7 @@
     <button class="tab active" data-view="home">Início</button>
     <button class="tab" data-view="chamados">Chamados</button>
     <button class="tab" data-view="treinamentos">Treinamentos</button>
-    <button class="tab" data-view="rh">RH</button>
+    <button class="tab" data-view="setores">Setores</button>
     <button class="tab" data-view="comunicados">Comunicados</button>
     <button class="tab adminOnly" data-view="admin">Admin</button>
   </nav>
@@ -193,41 +193,60 @@
     </section>
   </section>
 
-  <!-- ===== RH ===== -->
-  <section class="view hidden" id="view-rh">
+  <!-- ===== SETORES (NOVO ESTILO ORGANOGRAMA) ===== -->
+  <section class="view hidden" id="view-setores">
     <section class="card">
       <div class="cardHead">
-        <h2>RH</h2>
+        <h2>Organograma da Empresa</h2>
         <div class="actions adminOnly">
           <button class="btn" id="btnAddFuncionario">+ Adicionar</button>
         </div>
       </div>
 
-      <div class="filters">
-        <div class="field">
-          <label>Buscar funcionário</label>
-          <input id="rhSearch" type="text" placeholder="nome, setor, cargo..." />
+      <div class="orgTop">
+        <div class="orgIntro">
+          <p class="muted">
+            Use a busca para encontrar alguém rápido, ou clique nos filtros por setor.
+            Clique em um card para ver contato e detalhes.
+          </p>
         </div>
-        <div class="field">
-          <label>Setor</label>
-          <select id="rhSetor">
-            <option value="all">Todos</option>
-          </select>
+
+        <div class="orgStats">
+          <div class="stat">
+            <div class="statNum" id="statPessoas">0</div>
+            <div class="muted small">Pessoas</div>
+          </div>
+          <div class="stat">
+            <div class="statNum" id="statSetores">0</div>
+            <div class="muted small">Setores</div>
+          </div>
         </div>
       </div>
 
-      <div class="cards" id="rhCards"></div>
-      <p class="muted small" id="rhEmpty"></p>
+      <div class="orgToolbar">
+        <div class="orgChips" id="setorChips"></div>
+
+        <div class="orgSearch">
+          <input id="setorSearch" type="text" placeholder="Buscar por nome, cargo ou setor..." />
+          <button class="btn ghost small" id="btnClearSetor">Limpar</button>
+        </div>
+      </div>
+
+      <div class="orgSections" id="orgSections"></div>
+      <p class="muted small" id="setoresEmpty"></p>
     </section>
 
-    <!-- Drawer/Modal de contato -->
-    <div class="modalBack" id="rhModal" aria-hidden="true">
+    <!-- Modal contato/detalhes -->
+    <div class="modalBack" id="setorModal" aria-hidden="true">
       <div class="modal">
         <div class="modalHead">
-          <h3 id="rhModalTitle">Contato</h3>
-          <button class="btn ghost small" id="btnRhClose">Fechar</button>
+          <h3 id="setorModalTitle">Contato</h3>
+          <div class="row gap">
+            <button class="btn small adminOnly" id="btnEditFromModal">Editar</button>
+            <button class="btn ghost small" id="btnSetorClose">Fechar</button>
+          </div>
         </div>
-        <div class="modalBody" id="rhModalBody"></div>
+        <div class="modalBody" id="setorModalBody"></div>
       </div>
     </div>
   </section>
