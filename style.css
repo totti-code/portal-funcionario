@@ -318,7 +318,13 @@ textarea{ min-height: 90px; resize: vertical; }
 .chip.admin{ border-color: rgba(124,58,237,.55); background: rgba(124,58,237,.18); }
 .chip.user{ border-color: rgba(76,201,240,.55); background: rgba(76,201,240,.12); }
 
-.adminOnly{ display:none; }
+/* ✅ AQUI ESTÁ A CORREÇÃO:
+   em vez de .adminOnly { display:none; }
+   agora escondemos só quando NÃO for admin.
+*/
+body:not(.isAdmin) .adminOnly{
+  display:none !important;
+}
 
 /* ====== SETORES (ORGANOGRAMA) ====== */
 .orgTop{
