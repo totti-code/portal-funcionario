@@ -3,392 +3,331 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portal do Funcionário</title>
+  <title>Martree | Portal do Funcionário</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header class="top">
-    <div class="topInner">
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modalBack" id="loginModal" aria-hidden="true">
+  <div class="modal">
+    <div class="modalHead">
       <div class="brand">
-        <div class="logoWrap">
-          <img class="logo" src="assets/logo.png" alt="Logo da empresa" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='grid';">
-          <div id="logoFallback" class="logoFallback" style="display:none;">PF</div>
-        </div>
+        <div class="logo">M</div>
         <div>
-          <h1>Portal do Funcionário</h1>
-          <p class="muted">Acesso rápido • Comunicados • Documentos • Chamados</p>
+          <h1>Martree</h1>
+          <p class="muted">Portal do Funcionário</p>
         </div>
-      </div>
-
-      <div class="topRight">
-        <div class="clock">
-          <div class="clockLabel muted">Agora</div>
-          <div class="clockValue" id="clock">--:--</div>
-        </div>
-        <button class="btn ghost" id="btnTheme" title="Alternar tema">Tema</button>
       </div>
     </div>
 
-    <div class="tabs">
-      <button class="tab active" data-tab="home">Início</button>
-      <button class="tab" data-tab="comunicados">Comunicados</button>
-      <button class="tab" data-tab="documentos">Documentos</button>
-      <button class="tab" data-tab="treinamentos">Treinamentos</button>
-      <a class="tab" 
-   href="https://totti-code.github.io/Chamado-ti/" 
-   target="_blank" 
-   rel="noopener noreferrer">
-   Chamados
-</a>
-      <button class="tab" data-tab="rh">RH</button>
-    </div>
-  </header>
+    <div class="modalBody">
+      <h2>Acesso</h2>
+      <p class="muted">Entre com seu usuário e senha.</p>
 
-  <main class="wrap">
+      <label>Usuário</label>
+      <input id="loginUser" type="text" placeholder="ex.: totti" autocomplete="username" />
 
-    <!-- BARRA DE BUSCA -->
-    <section class="card searchCard">
-      <div class="searchRow">
-        <div class="field">
-          <label>Buscar</label>
-          <input id="q" placeholder="Pesquisar comunicados e documentos..." autocomplete="off" />
-        </div>
-        <div class="field">
-          <label>Filtro</label>
-          <select id="filter">
-            <option value="all">Tudo</option>
-            <option value="comunicados">Comunicados</option>
-            <option value="documentos">Documentos</option>
-          </select>
-        </div>
-        <button class="btn" id="btnSearch">Pesquisar</button>
+      <label>Senha</label>
+      <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password" />
+
+      <div class="row gap">
+        <button class="btn" id="btnLogin">Entrar</button>
+        <button class="btn ghost" id="btnUseDemo">Usar demo</button>
       </div>
-      <div class="searchResults" id="searchResults" hidden></div>
-    </section>
 
-    <!-- HOME -->
-    <section class="grid tabPanel" id="tab-home">
+      <div class="hint">
+        <strong>Contas demo:</strong>
+        <div class="hintGrid">
+          <div class="hintItem">
+            <span class="chip admin">admin</span>
+            <code>admin</code> / <code>martree123</code>
+          </div>
+          <div class="hintItem">
+            <span class="chip user">usuário</span>
+            <code>maria</code> / <code>1234</code>
+          </div>
+        </div>
+      </div>
+
+      <p class="small muted" id="loginMsg"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<header class="top">
+  <div class="topInner">
+    <div class="brand">
+      <div class="logo">M</div>
+      <div>
+        <h1>Martree</h1>
+        <p class="muted">Portal do Funcionário</p>
+      </div>
+    </div>
+
+    <div class="userBox">
+      <div class="userMeta">
+        <div class="muted small">Logado como</div>
+        <div class="userLine">
+          <strong id="whoName">—</strong>
+          <span id="whoRole" class="badge">—</span>
+        </div>
+      </div>
+      <button class="btn ghost" id="btnLogout" title="Sair">Sair</button>
+    </div>
+  </div>
+
+  <nav class="tabs" aria-label="Navegação">
+    <button class="tab active" data-view="home">Início</button>
+    <button class="tab" data-view="chamados">Chamados</button>
+    <button class="tab" data-view="treinamentos">Treinamentos</button>
+    <button class="tab" data-view="rh">RH</button>
+    <button class="tab" data-view="comunicados">Comunicados</button>
+    <button class="tab adminOnly" data-view="admin">Admin</button>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== HOME ===== -->
+  <section class="view" id="view-home">
+    <div class="grid2">
       <section class="card">
-        <h2>Atalhos</h2>
-        <div class="shortcutGrid">
-          <a class="shortcut" href="#" data-action="holerite">
-            <div class="sIcon">📄</div>
-            <div class="sText">
-              <div class="sTitle">Holerite</div>
-              <div class="muted small">Link/arquivo do RH</div>
-            </div>
-          </a>
-
-          <a class="shortcut" href="#" data-action="escala">
-            <div class="sIcon">🗓️</div>
-            <div class="sText">
-              <div class="sTitle">Escala</div>
-              <div class="muted small">Turnos e folgas</div>
-            </div>
-          </a>
-
-          <a class="shortcut" href="#" data-action="treinamentos">
-            <div class="sIcon">🎓</div>
-            <div class="sText">
-              <div class="sTitle">Treinamentos</div>
-              <div class="muted small">Conteúdos internos</div>
-            </div>
-          </a>
-
-          <a class="shortcut" href="#" data-action="beneficios">
-            <div class="sIcon">💳</div>
-            <div class="sText">
-              <div class="sTitle">Benefícios</div>
-              <div class="muted small">VR/VA, convênios</div>
-            </div>
-          </a>
-
-          <a class="shortcut" href="https://totti-code.github.io/Chamado-ti/" target="_blank">
-            <div class="sIcon">🧰</div>
-            <div class="sText">
-              <div class="sTitle">Suporte TI</div>
-              <div class="muted small">Abrir chamado</div>
-            </div>
-          </a>
-
-          <a class="shortcut" href="#" data-action="rh">
-            <div class="sIcon">👥</div>
-            <div class="sText">
-              <div class="sTitle">Falar com RH</div>
-              <div class="muted small">Solicitações e dúvidas</div>
-            </div>
-          </a>
+        <div class="cardHead">
+          <h2>Escalas</h2>
+          <div class="actions adminOnly">
+            <button class="btn small" id="btnAddEscala">+ Adicionar</button>
+          </div>
         </div>
+        <p class="muted">Visualize sua escala semanal.</p>
+
+        <div class="list" id="escalaList"></div>
+        <p class="muted small" id="escalaEmpty"></p>
       </section>
 
       <section class="card">
         <div class="cardHead">
-          <h2>Comunicados recentes</h2>
-          <button class="btn ghost" id="btnMarkAll">Marcar tudo como lido</button>
+          <h2>Aniversariantes do mês</h2>
+          <div class="actions adminOnly">
+            <button class="btn small" id="btnAddBday">+ Adicionar</button>
+          </div>
         </div>
-        <div class="list" id="homeComunicados"></div>
+        <p class="muted">Parabéns para a galera 🎉</p>
+
+        <div class="list" id="bdayList"></div>
+        <p class="muted small" id="bdayEmpty"></p>
       </section>
-
-      <section class="card">
-        <h2>Aniversariantes do mês</h2>
-        <div class="list" id="birthdays"></div>
-      </section>
-    </section>
-
-    <!-- COMUNICADOS -->
-    <section class="card tabPanel" id="tab-comunicados" hidden>
-      <div class="cardHead">
-        <h2>Comunicados</h2>
-        <button class="btn" id="btnNewComunicado">+ Novo (local)</button>
-      </div>
-
-      <div class="muted small" style="margin-top:-6px">
-        * “Novo (local)” salva só no seu navegador. Depois dá pra ligar no Supabase.
-      </div>
-
-      <div class="list" id="comunicadosList" style="margin-top:14px;"></div>
-
-      <div class="divider"></div>
-
-      <h3>Criar comunicado (local)</h3>
-      <div class="formGrid">
-        <div class="field">
-          <label>Título</label>
-          <input id="cTitle" placeholder="Ex: Atualização de escala" />
-        </div>
-        <div class="field">
-          <label>Categoria</label>
-          <select id="cCat">
-            <option>Geral</option>
-            <option>RH</option>
-            <option>TI</option>
-            <option>Loja</option>
-            <option>Segurança</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label>Mensagem</label>
-          <textarea id="cMsg" rows="4" placeholder="Escreva o comunicado..."></textarea>
-        </div>
-        <button class="btn" id="btnSaveComunicado">Salvar</button>
-      </div>
-    </section>
-    <!-- TREINAMENTOS -->
-<section class="card tabPanel" id="tab-treinamentos" hidden>
-  <div class="cardHead">
-    <h2>Treinamentos</h2>
-    <button class="btn" id="btnAddTreino">+ Adicionar (local)</button>
-  </div>
-
-  <div class="muted small" style="margin-top:-6px">
-    * “Adicionar (local)” salva só no seu navegador. Você pode colocar links do Drive, YouTube, PDFs, etc.
-  </div>
-
-  <div class="list" id="treinosList" style="margin-top:14px;"></div>
-
-  <div class="divider"></div>
-
-  <h3>Adicionar treinamento (local)</h3>
-  <div class="formGrid">
-    <div class="field">
-      <label>Título</label>
-      <input id="tTitle" placeholder="Ex: Atendimento ao cliente" />
     </div>
+  </section>
 
-    <div class="field">
-      <label>Categoria</label>
-      <select id="tCat">
-        <option>Geral</option>
-        <option>Loja</option>
-        <option>Caixa</option>
-        <option>TI</option>
-        <option>RH</option>
-        <option>Segurança</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>Tipo</label>
-      <select id="tType">
-        <option>Vídeo</option>
-        <option>PDF</option>
-        <option>Link</option>
-        <option>Checklist</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>Obrigatório?</label>
-      <select id="tReq">
-        <option>Sim</option>
-        <option>Não</option>
-      </select>
-    </div>
-
-    <div class="field full">
-      <label>Link (URL)</label>
-      <input id="tUrl" placeholder="Ex: https://drive.google.com/... ou https://youtu.be/..." />
-    </div>
-
-    <div class="field full">
-      <label>Descrição</label>
-      <textarea id="tDesc" rows="3" placeholder="Descreva o treinamento..."></textarea>
-    </div>
-
-    <button class="btn" id="btnSaveTreino">Salvar</button>
-  </div>
-</section>
-
-    <!-- DOCUMENTOS -->
-    <section class="card tabPanel" id="tab-documentos" hidden>
-      <div class="cardHead">
-        <h2>Documentos</h2>
-        <button class="btn" id="btnAddDoc">+ Adicionar (local)</button>
-      </div>
-
-      <div class="list" id="docsList" style="margin-top:14px;"></div>
-
-      <div class="divider"></div>
-
-      <h3>Adicionar documento (local)</h3>
-      <div class="formGrid">
-        <div class="field">
-          <label>Nome</label>
-          <input id="dName" placeholder="Ex: Manual do colaborador" />
-        </div>
-        <div class="field">
-          <label>Tipo</label>
-          <select id="dType">
-            <option>PDF</option>
-            <option>Link</option>
-            <option>Imagem</option>
-            <option>Outro</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label>URL (ou caminho)</label>
-          <input id="dUrl" placeholder="Ex: https://... ou assets/manual.pdf" />
-        </div>
-        <button class="btn" id="btnSaveDoc">Salvar</button>
-      </div>
-    </section>
-
-    <!-- CHAMADOS -->
-    <section class="card tabPanel" id="tab-chamados" hidden>
+  <!-- ===== CHAMADOS ===== -->
+  <section class="view hidden" id="view-chamados">
+    <section class="card">
       <div class="cardHead">
         <h2>Chamados</h2>
-        <button class="btn danger" id="btnClearTickets">Limpar (local)</button>
+        <div class="actions">
+          <button class="btn" id="btnNewTicket">+ Abrir chamado</button>
+        </div>
       </div>
 
-      <div class="formGrid" style="margin-top:14px;">
+      <div class="filters">
         <div class="field">
-          <label>Área</label>
-          <select id="tArea">
-            <option>TI</option>
-            <option>RH</option>
-            <option>Manutenção</option>
-            <option>Financeiro</option>
+          <label>Buscar</label>
+          <input id="ticketSearch" type="text" placeholder="título, descrição, solicitante..." />
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="ticketStatus">
+            <option value="all">Todos</option>
+            <option value="aberto">Aberto</option>
+            <option value="andamento">Em andamento</option>
+            <option value="resolvido">Resolvido</option>
           </select>
         </div>
         <div class="field">
           <label>Prioridade</label>
-          <select id="tPrio">
-            <option>Baixa</option>
-            <option>Média</option>
-            <option>Alta</option>
-            <option>Crítica</option>
+          <select id="ticketPrioridade">
+            <option value="all">Todas</option>
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
           </select>
         </div>
-        <div class="field full">
-          <label>Descrição</label>
-          <textarea id="tDesc" rows="4" placeholder="Explique o problema/pedido..."></textarea>
-        </div>
-        <button class="btn" id="btnCreateTicket">Abrir chamado</button>
       </div>
 
-      <div class="divider"></div>
+      <div class="tableWrap">
+        <table class="table" aria-label="Lista de chamados">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Data</th>
+              <th>Título</th>
+              <th>Solicitante</th>
+              <th>Prioridade</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="ticketTbody"></tbody>
+        </table>
+      </div>
 
-      <h3>Meus chamados (local)</h3>
-      <div class="list" id="ticketsList"></div>
+      <p class="muted small" id="ticketEmpty"></p>
+    </section>
+  </section>
+
+  <!-- ===== TREINAMENTOS ===== -->
+  <section class="view hidden" id="view-treinamentos">
+    <section class="card">
+      <div class="cardHead">
+        <h2>Treinamentos</h2>
+        <div class="actions adminOnly">
+          <button class="btn" id="btnAddTreino">+ Adicionar</button>
+        </div>
+      </div>
+      <p class="muted">Materiais, links e trilhas internas.</p>
+
+      <div class="cards" id="treinoCards"></div>
+      <p class="muted small" id="treinoEmpty"></p>
+    </section>
+  </section>
+
+  <!-- ===== RH ===== -->
+  <section class="view hidden" id="view-rh">
+    <section class="card">
+      <div class="cardHead">
+        <h2>RH</h2>
+        <div class="actions adminOnly">
+          <button class="btn" id="btnAddFuncionario">+ Adicionar</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="field">
+          <label>Buscar funcionário</label>
+          <input id="rhSearch" type="text" placeholder="nome, setor, cargo..." />
+        </div>
+        <div class="field">
+          <label>Setor</label>
+          <select id="rhSetor">
+            <option value="all">Todos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cards" id="rhCards"></div>
+      <p class="muted small" id="rhEmpty"></p>
     </section>
 
-    <!-- RH -->
-    <section class="card tabPanel" id="tab-rh" hidden>
-      <!-- TREINAMENTOS -->
-<section class="card tabPanel" id="tab-treinamentos" hidden>
-  <h2>Treinamentos Internos</h2>
-
-  <div class="list">
-
-    <div class="item">
-      <div class="itemTop">
-        <div>
-          <p class="itemTitle">Boas práticas no atendimento</p>
-          <div class="itemMeta">
-            <span class="badge">Atendimento</span>
-            <span class="badge">Obrigatório</span>
-          </div>
+    <!-- Drawer/Modal de contato -->
+    <div class="modalBack" id="rhModal" aria-hidden="true">
+      <div class="modal">
+        <div class="modalHead">
+          <h3 id="rhModalTitle">Contato</h3>
+          <button class="btn ghost small" id="btnRhClose">Fechar</button>
         </div>
-      </div>
-      <div class="itemText">
-        Treinamento voltado para melhoria no atendimento ao cliente.
-      </div>
-      <div style="margin-top:10px;">
-        <a class="btn ghost" href="#" target="_blank">Abrir Material</a>
+        <div class="modalBody" id="rhModalBody"></div>
       </div>
     </div>
+  </section>
 
-    <div class="item">
-      <div class="itemTop">
-        <div>
-          <p class="itemTitle">Segurança da Informação</p>
-          <div class="itemMeta">
-            <span class="badge">TI</span>
-            <span class="badge">Anual</span>
-          </div>
+  <!-- ===== COMUNICADOS ===== -->
+  <section class="view hidden" id="view-comunicados">
+    <section class="card">
+      <div class="cardHead">
+        <h2>Comunicados</h2>
+        <div class="actions adminOnly">
+          <button class="btn" id="btnAddComunicado">+ Adicionar</button>
         </div>
       </div>
-      <div class="itemText">
-        Orientações sobre senhas, phishing e proteção de dados.
-      </div>
-      <div style="margin-top:10px;">
-        <a class="btn ghost" href="#" target="_blank">Assistir Vídeo</a>
-      </div>
-    </div>
 
+      <div class="list" id="comList"></div>
+      <p class="muted small" id="comEmpty"></p>
+    </section>
+  </section>
+
+  <!-- ===== ADMIN ===== -->
+  <section class="view hidden" id="view-admin">
+    <section class="card">
+      <div class="cardHead">
+        <h2>Painel Admin</h2>
+        <div class="actions">
+          <button class="btn danger" id="btnResetAll">Resetar dados</button>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="subcard">
+          <h3>Usuários</h3>
+          <p class="muted small">Crie logins de usuários (sem tela de registro).</p>
+
+          <div class="grid2">
+            <div>
+              <label>Usuário</label>
+              <input id="newU" type="text" placeholder="ex.: joao" />
+            </div>
+            <div>
+              <label>Senha</label>
+              <input id="newP" type="text" placeholder="ex.: 1234" />
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div>
+              <label>Nome</label>
+              <input id="newName" type="text" placeholder="ex.: João Silva" />
+            </div>
+            <div>
+              <label>Cargo/Setor</label>
+              <input id="newJob" type="text" placeholder="ex.: Operador de Caixa (Loja 01)" />
+            </div>
+          </div>
+
+          <div class="row gap">
+            <button class="btn" id="btnAddUser">Adicionar usuário</button>
+          </div>
+
+          <div class="tableWrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Usuário</th>
+                  <th>Nome</th>
+                  <th>Role</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="userTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <h3>Dicas</h3>
+          <ul class="muted small">
+            <li>Admin consegue: adicionar/editar/remover Treinamentos, Aniversariantes, Escalas, Comunicados e editar Chamados.</li>
+            <li>Usuário consegue: visualizar tudo e abrir chamados.</li>
+            <li>Para segurança real, use Supabase/Backend (eu te ajudo depois).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<!-- ===== MODAL (GENÉRICO) ===== -->
+<div class="modalBack" id="formModal" aria-hidden="true">
+  <div class="modal">
+    <div class="modalHead">
+      <h3 id="formTitle">Título</h3>
+      <button class="btn ghost small" id="btnFormClose">Fechar</button>
+    </div>
+    <div class="modalBody" id="formBody"></div>
   </div>
-</section>
-      <h2>RH</h2>
-      <div class="twoCols">
-        <div class="miniCard">
-          <h3>Links úteis</h3>
-          <ul class="bullets">
-            <li><a href="#" data-action="holerite">Holerite</a></li>
-            <li><a href="#" data-action="beneficios">Benefícios</a></li>
-            <li><a href="#" data-action="politicas">Políticas internas</a></li>
-          </ul>
-        </div>
-        <div class="miniCard">
-          <h3>Contato</h3>
-          <p class="muted">Defina aqui os contatos oficiais do RH:</p>
-          <ul class="bullets">
-            <li>WhatsApp: <span class="muted"> (xx) xxxx-xxxx</span></li>
-            <li>E-mail: <span class="muted"> rh@empresa.com</span></li>
-            <li>Horário: <span class="muted"> 08:00–17:00</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
+</div>
 
-    <footer class="footer muted small">
-      <span>Portal do Funcionário • feito em HTML/CSS/JS</span>
-      <span class="dot">•</span>
-      <span id="buildInfo"></span>
-    </footer>
-
-  </main>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
