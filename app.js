@@ -29,11 +29,29 @@ const defaultData = {
     { id: uid("D"), name:"Manual do Colaborador", type:"PDF", url:"assets/manual.pdf", at: nowISO() },
     { id: uid("D"), name:"Canal de Comunicados (WhatsApp)", type:"Link", url:"#", at: nowISO() },
   ],
-  tickets: []
+  tickets: [],
+  treinos: [
+    {
+      id: uid("TR"),
+      title: "Boas práticas no atendimento",
+      cat: "Loja",
+      type: "Vídeo",
+      req: "Sim",
+      url: "https://example.com",
+      desc: "Treinamento básico para atendimento ao cliente.",
+      at: nowISO()
+    }
+  ]
 };
 
-const data = loadJSON(STORE_KEY, defaultData);
+const data  = loadJSON(STORE_KEY, defaultData);
 const prefs = loadJSON(PREF_KEY, { theme:"dark" });
+
+/* garante arrays mesmo se seu localStorage for antigo */
+data.comunicados = Array.isArray(data.comunicados) ? data.comunicados : [];
+data.docs        = Array.isArray(data.docs) ? data.docs : [];
+data.tickets     = Array.isArray(data.tickets) ? data.tickets : [];
+data.treinos     = Array.isArray(data.treinos) ? data.treinos : [];
 
 function persist(){ saveJSON(STORE_KEY, data); }
 function persistPrefs(){ saveJSON(PREF_KEY, prefs); }
@@ -65,14 +83,22 @@ const panels = {
 
 function openTab(key){
   tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === key));
-  Object.entries(panels).forEach(([k, el]) => { el.hidden = (k !== key); });
+  Object.entries(panels).forEach(([k, el]) => { if(el) el.hidden = (k !== key); });
+
   if(key === "home") renderHome();
   if(key === "comunicados") renderComunicados();
   if(key === "documentos") renderDocs();
   if(key === "chamados") renderTickets();
-if(key === "treinamentos") renderTreinamentos();
+  if(key === "treinamentos") renderTreinamentos();
 }
-tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
+
+tabs.forEach(t => {
+  // Só tabs que são <button> têm dataset.tab; se você trocou Chamados por <a>, tudo ok
+  t.addEventListener("click", () => {
+    const k = t.dataset.tab;
+    if(k) openTab(k);
+  });
+});
 
 /* ===== THEME BUTTON ===== */
 $("btnTheme").addEventListener("click", () => {
@@ -86,19 +112,19 @@ document.querySelectorAll("[data-action]").forEach(a => {
   a.addEventListener("click", (e) => {
     e.preventDefault();
     const act = a.dataset.action;
+
     const map = {
-      holerite: "Defina o link do Holerite no app.js (map) ou em Documentos.",
+      holerite: "Defina o link do Holerite em Documentos (ex: PDF/Drive).",
       escala: "Coloque o link da escala em Documentos (ex: Google Drive/Sheets).",
-      treinamentos: "Crie uma página/links de treinamentos em Documentos.",
-      beneficios: "Cadastre os benefícios aqui (links, PDFs).",
-      ti: "Abrindo aba Chamados…",
-      rh: "Abrindo aba RH…",
+      beneficios: "Cadastre os benefícios em Documentos (links/PDFs).",
       politicas: "Cadastre as políticas em Documentos."
     };
+
     if(act === "treinamentos") return openTab("treinamentos");
-if(act === "ti") return openTab("chamados");
-if(act === "rh") return openTab("rh");
-alert(map[act] || "Ação não configurada.");
+    if(act === "ti") return openTab("chamados");
+    if(act === "rh") return openTab("rh");
+
+    alert(map[act] || "Ação não configurada.");
   });
 });
 
@@ -143,7 +169,6 @@ function renderHome(){
 }
 
 function renderBirthdays(){
-  // Edite aqui os aniversariantes
   const people = [
     { name:"Maria", day: 3, dept:"CPD" },
     { name:"Felipe", day: 12, dept:"TI" },
@@ -151,7 +176,6 @@ function renderBirthdays(){
   ];
 
   const month = new Date().getMonth();
-  // Exemplo simples: lista fixa (você pode adaptar pra puxar de dados depois)
   $("birthdays").innerHTML = people.map(p => `
     <div class="item">
       <div class="itemTop">
@@ -200,6 +224,7 @@ function renderComunicados(){
       renderHome();
     });
   });
+
   document.querySelectorAll("[data-delc]").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.delc;
@@ -216,6 +241,7 @@ $("btnSaveComunicado").addEventListener("click", () => {
   const cat = $("cCat").value;
   const msg = $("cMsg").value.trim();
   if(!title || !msg) return alert("Preencha título e mensagem.");
+
   data.comunicados.unshift({ id: uid("C"), title, cat, msg, at: nowISO(), read:false });
   $("cTitle").value = "";
   $("cMsg").value = "";
@@ -224,9 +250,7 @@ $("btnSaveComunicado").addEventListener("click", () => {
   renderHome();
 });
 
-$("btnNewComunicado").addEventListener("click", () => {
-  $("cTitle").focus();
-});
+$("btnNewComunicado").addEventListener("click", () => $("cTitle").focus());
 
 $("btnMarkAll").addEventListener("click", () => {
   data.comunicados.forEach(c => c.read = true);
@@ -238,6 +262,7 @@ $("btnMarkAll").addEventListener("click", () => {
 /* ===== DOCUMENTOS ===== */
 function renderDocs(){
   const list = [...data.docs].sort((a,b) => (a.at < b.at ? 1 : -1));
+
   $("docsList").innerHTML = list.map(d => `
     <div class="item">
       <div class="itemTop">
@@ -246,7 +271,7 @@ function renderDocs(){
           <div class="itemMeta">${badge(d.type)} ${badge(d.at)}</div>
         </div>
         <div class="badges">
-          <a class="btn ghost" href="${escapeHtml(d.url)}" target="_blank" rel="noreferrer">Abrir</a>
+          <a class="btn ghost" href="${escapeHtml(d.url)}" target="_blank" rel="noopener noreferrer">Abrir</a>
           <button class="btn danger" data-deld="${d.id}">Excluir</button>
         </div>
       </div>
@@ -269,6 +294,7 @@ $("btnSaveDoc").addEventListener("click", () => {
   const type = $("dType").value;
   const url  = $("dUrl").value.trim();
   if(!name || !url) return alert("Preencha nome e URL.");
+
   data.docs.unshift({ id: uid("D"), name, type, url, at: nowISO() });
   $("dName").value = "";
   $("dUrl").value = "";
@@ -289,6 +315,7 @@ function prioClass(p){
 
 function renderTickets(){
   const list = [...data.tickets].sort((a,b) => (a.at < b.at ? 1 : -1));
+
   $("ticketsList").innerHTML = list.map(t => `
     <div class="item">
       <div class="itemTop">
@@ -319,6 +346,7 @@ function renderTickets(){
       renderTickets();
     });
   });
+
   document.querySelectorAll("[data-delt]").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.delt;
@@ -334,6 +362,7 @@ $("btnCreateTicket").addEventListener("click", () => {
   const prio = $("tPrio").value;
   const desc = $("tDesc").value.trim();
   if(!desc) return alert("Descreva o chamado.");
+
   data.tickets.unshift({ id: uid("T"), area, prio, desc, status:"Aberto", at: nowISO() });
   $("tDesc").value = "";
   persist();
@@ -346,6 +375,73 @@ $("btnClearTickets").addEventListener("click", () => {
   persist();
   renderTickets();
 });
+
+/* ===== TREINAMENTOS ===== */
+function renderTreinamentos(){
+  const list = [...data.treinos].sort((a,b) => (a.at < b.at ? 1 : -1));
+
+  $("treinosList").innerHTML = list.map(tr => `
+    <div class="item">
+      <div class="itemTop">
+        <div>
+          <p class="itemTitle">${escapeHtml(tr.title)}</p>
+          <div class="itemMeta">
+            ${badge(tr.cat)}
+            ${badge(tr.type)}
+            ${tr.req === "Sim" ? badge("Obrigatório","new") : badge("Opcional")}
+            ${badge(tr.at)}
+          </div>
+        </div>
+
+        <div class="badges">
+          <a class="btn ghost" href="${escapeHtml(tr.url)}" target="_blank" rel="noopener noreferrer">Abrir</a>
+          <button class="btn danger" data-deltr="${tr.id}">Excluir</button>
+        </div>
+      </div>
+
+      <div class="itemText">${escapeHtml(tr.desc || "")}</div>
+      <div class="itemText muted small" style="margin-top:8px;">${escapeHtml(tr.url)}</div>
+    </div>
+  `).join("") || `<div class="muted">Sem treinamentos ainda.</div>`;
+
+  document.querySelectorAll("[data-deltr]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.deltr;
+      data.treinos = data.treinos.filter(x => x.id !== id);
+      persist();
+      renderTreinamentos();
+    });
+  });
+}
+
+if($("btnSaveTreino")){
+  $("btnSaveTreino").addEventListener("click", () => {
+    const title = $("tTitle").value.trim();
+    const cat   = $("tCat").value;
+    const type  = $("tType").value;
+    const req   = $("tReq").value;
+    const url   = $("tUrl").value.trim();
+    const desc  = $("tDesc").value.trim();
+
+    if(!title || !url) return alert("Preencha Título e Link (URL).");
+
+    data.treinos.unshift({
+      id: uid("TR"),
+      title, cat, type, req, url, desc,
+      at: nowISO()
+    });
+
+    $("tTitle").value = "";
+    $("tUrl").value = "";
+    $("tDesc").value = "";
+    persist();
+    renderTreinamentos();
+  });
+}
+
+if($("btnAddTreino")){
+  $("btnAddTreino").addEventListener("click", () => $("tTitle").focus());
+}
 
 /* ===== BUSCA ===== */
 function searchAll(){
@@ -375,6 +471,16 @@ function searchAll(){
       const hay = `${d.name} ${d.type} ${d.url}`.toLowerCase();
       if(hay.includes(q)){
         results.push({ kind:"Documento", title:d.name, meta:`${d.type} • ${d.at}`, text:d.url });
+      }
+    }
+  }
+
+  // deixa Treinamentos também (fica bem útil)
+  if(filter === "all"){
+    for(const tr of data.treinos){
+      const hay = `${tr.title} ${tr.cat} ${tr.type} ${tr.req} ${tr.desc} ${tr.url}`.toLowerCase();
+      if(hay.includes(q)){
+        results.push({ kind:"Treinamento", title:tr.title, meta:`${tr.cat} • ${tr.type} • ${tr.at}`, text: tr.url });
       }
     }
   }
