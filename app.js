@@ -95,9 +95,10 @@ document.querySelectorAll("[data-action]").forEach(a => {
       rh: "Abrindo aba RH…",
       politicas: "Cadastre as políticas em Documentos."
     };
-    if(act === "ti") return openTab("chamados");
-    if(act === "rh") return openTab("rh");
-    alert(map[act] || "Ação não configurada.");
+    if(act === "treinamentos") return openTab("treinamentos");
+if(act === "ti") return openTab("chamados");
+if(act === "rh") return openTab("rh");
+alert(map[act] || "Ação não configurada.");
   });
 });
 
